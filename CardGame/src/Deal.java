@@ -8,22 +8,22 @@ public class Deal {
 
     private static myProfile my = new myProfile();
     private static gepProfile pc = new gepProfile();
+    private static Scanner sc = new Scanner(System.in);
 
     public static void bet(myProfile my, gepProfile gep, Pot pot) {
         System.out.println("How Much?    Balance: " + my.getBalance());
-        Scanner sc = new Scanner(System.in);
-        int bet = sc.nextInt();
+        int bet = intBeolvasas();
         my.setBalance(my.getBalance() - bet);
         gep.setBalance(gep.getBalance() - bet);
         pot.setPot(pot.getPot() + bet * 2);
         System.out.println("New Balance: " + my.getBalance());
         System.out.println("Pot: " + pot.getPot());
-        sc.close();
     }
 
     public static void moneyUpload() {
         System.out.println("Add money to your balance: (The AI will start with the same amount)");
-        int balance = Integer.parseInt(beolvasas());
+        Scanner sc = new Scanner(System.in);
+        int balance = sc.nextInt();
         my.setBalance(balance);
         pc.setBalance(balance);
     }
@@ -49,14 +49,13 @@ public class Deal {
 
         System.out.println("Your Cards: " + my.myHand);
         System.out.println("C = Check , R = Raise , F = Fold");
-        String c = "";
-        c = beolvasas();
+        String c = stringBeolvasas();
         if (c.equals("R") || c.equals("r")) {
             bet(my, pc, pot);
         }
         if (c.equals("F") || c.equals("f")) {
             System.out.println("New Deal? Y/N");
-            c = beolvasas();
+            c = stringBeolvasas();
             if (c.equals("N") || c.equals("n")) {
                 System.exit(0);
             }
@@ -77,13 +76,13 @@ public class Deal {
         System.out.println("Your Cards: " + my.myHand);
         System.out.println("C = Check , R = Raise , F = Fold");
         Scanner scb = new Scanner(System.in);
-        c = beolvasas();
+        c = stringBeolvasas();
         if (c.equals("R") || c.equals("r")) {
             bet(my, pc, pot);
         }
         if (c.equals("F") || c.equals("f")) {
             System.out.println("New Deal? Y/N");
-            c = beolvasas();
+            c = stringBeolvasas();
             if (c.equals("N") || c.equals("n")) {
                 System.exit(0);
             }
@@ -103,13 +102,13 @@ public class Deal {
 
         System.out.println("Your Cards: " + my.myHand);
         System.out.println("C = Check , R = Raise , F = Fold");
-        c = beolvasas();
+        c = stringBeolvasas();
         if (c.equals("R") || c.equals("r")) {
             bet(my, pc, pot);
         }
         if (c.equals("F") || c.equals("f")) {
             System.out.println("New Deal? Y/N");
-            c = beolvasas();
+            c = stringBeolvasas();
             if (c.equals("N") || c.equals("n")) {
                 System.exit(0);
             }
@@ -146,14 +145,16 @@ public class Deal {
         scd.close();
     }
 
-    private static String beolvasas() {
-        Scanner sc = new Scanner(System.in);
-        String answer = "";
-        while (sc.hasNext()){
+    private static String stringBeolvasas() {
+        String answer = null;
+        do {
             answer = sc.next();
-        }
-        sc.close();
-        return answer;
+            return answer;
+        } while (!answer.equals("r"));
+
+    }
+    private static int intBeolvasas() {
+       return Integer.parseInt(stringBeolvasas());
     }
 }
 
