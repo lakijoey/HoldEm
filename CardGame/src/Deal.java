@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
 
 public class Deal {
 
@@ -9,6 +6,49 @@ public class Deal {
     private static myProfile my = new myProfile();
     private static gepProfile pc = new gepProfile();
     private static Scanner sc = new Scanner(System.in);
+    private static ArrayList<Card> cards = Deck.myDeck();
+
+    private static void printCard(Card card) {
+        int a = card.getValue();
+        switch (a) {
+            case 1:
+                System.out.println(card.getSymbol() + " - ACE ");
+                break;
+            case 11:
+                System.out.println(card.getSymbol() + " - Jack ");
+                break;
+            case 12:
+                System.out.println(card.getSymbol() + " - Queen ");
+                break;
+            case 13:
+                System.out.println(card.getSymbol() + " - King ");
+                break;
+            default:
+                System.out.println(card.getSymbol() + " - " + a);
+        }
+    }
+
+    public static Card chooseRandomCard() {
+        int symbol = (int) (Math.random() * 4) + 1;
+        int num = (int) (Math.random() * 13) + 1;
+        Card answer = new Card(chooseColor(symbol), num);
+        cards.remove(answer);
+        return answer;
+    }
+
+    public static Symbols chooseColor(int i) {
+        switch (i) {
+            case 1:
+                return Symbols.CLUBS;
+            case 2:
+                return Symbols.HEARTS;
+            case 3:
+                return Symbols.DIAMONDS;
+            case 4:
+                return Symbols.SPADES;
+        }
+        return null;
+    }
 
     public static void bet(myProfile my, gepProfile gep, Pot pot) {
         System.out.println("How Much?    Balance: " + my.getBalance());
@@ -22,32 +62,29 @@ public class Deal {
 
     public static void moneyUpload() {
         System.out.println("Add money to your balance: (The AI will start with the same amount)");
-        Scanner sc = new Scanner(System.in);
-        int balance = sc.nextInt();
+        int balance = intBeolvasas();
         my.setBalance(balance);
         pc.setBalance(balance);
     }
 
-    public static void aGame(ArrayList<Integer> cards) {
-        ArrayList<Integer> myCards = new ArrayList<>();             //Az en lapjaim
-        ArrayList<Integer> gepCards = new ArrayList<>();            //A gep lapjai
+    public static void runGame() {
+        ArrayList<Card> myCards = new ArrayList<Card>();             //Az en lapjaim
+        ArrayList<Card> gepCards = new ArrayList<Card>();             //A gep lapjai
 
-        for (int i = 0; i < 2; i++) {
-            int card = (int) (Math.random() * cards.size());
-            cards.remove(card);
-            myCards.add(card);
+        for (int i = 0; i < 2; i++) { //TODO how many player
+            Card card1 = chooseRandomCard();
+            Card card2 = chooseRandomCard();
+            myCards.add(card1);
+            gepCards.add(card2);
         }
 
-        for (int i = 0; i < 2; i++) {
-            int card = (int) (Math.random() * cards.size());
-            cards.remove(card);
-            gepCards.add(card);
-        }
         my.setMyHand(myCards);
         pc.setGepHand(gepCards);
         Pot pot = new Pot(0);
-
-        System.out.println("Your Cards: " + my.myHand);
+        System.out.println("Your Cards: ");
+        for (Card myCard : myCards) {
+            printCard(myCard);
+        }
         System.out.println("C = Check , R = Raise , F = Fold");
         String c = stringBeolvasas();
         if (c.equals("R") || c.equals("r")) {
@@ -60,22 +97,25 @@ public class Deal {
                 System.exit(0);
             }
             if (c.equals("Y") || c.equals("y")) {
-                aGame(Deck.myDeck());
+                runGame();
             }
         }
         //dealing flop, adding to cardsOnTable, and removing from deck
-        ArrayList<Integer> cardsOnTable = new ArrayList<>();
-        int burn = (int) (Math.random() * cards.size());
-        cards.remove(burn);
-        for (int i = 0; i < 3; i++) {                           //dealing flop, adding to cardsOnTable, and removing from deck
-            int card = (int) (Math.random() * cards.size());
-            cards.remove(card);
-            cardsOnTable.add(card);
+        ArrayList<Card> cardsOnTable = new ArrayList<>();
+        chooseRandomCard();
+        for (int i = 0; i < 3; i++) {
+            //dealing flop, adding to cardsOnTable, and removing from deck
+            cardsOnTable.add(chooseRandomCard());
         }
-        System.out.println("A flop: " + cardsOnTable);
-        System.out.println("Your Cards: " + my.myHand);
+        System.out.println("A flop: ");
+        for (Card card : cardsOnTable) {
+            printCard(card);
+        }
+        System.out.println("Your Cards: ");
+        for (Card myCard : myCards) {
+            printCard(myCard);
+        }
         System.out.println("C = Check , R = Raise , F = Fold");
-        Scanner scb = new Scanner(System.in);
         c = stringBeolvasas();
         if (c.equals("R") || c.equals("r")) {
             bet(my, pc, pot);
@@ -87,20 +127,23 @@ public class Deal {
                 System.exit(0);
             }
             if (c.equals("Y") || c.equals("y")) {
-                aGame(Deck.myDeck());
+                runGame();
             }
         }
 
         //Dealing the Turn
-        burn = (int) (Math.random() * cards.size());
-        cards.remove(burn);
+        chooseRandomCard();
 
-        int card = (int) (Math.random() * cards.size());
-        cards.remove(card);
-        cardsOnTable.add(card);
-        System.out.println("Turn: " + cardsOnTable);
+        cardsOnTable.add(chooseRandomCard());
+        System.out.println("Turn: ");
+        for (Card card : cardsOnTable) {
+            printCard(card);
+        }
 
-        System.out.println("Your Cards: " + my.myHand);
+        System.out.println("Your Cards: ");
+        for (Card myCard : myCards) {
+            printCard(myCard);
+        }
         System.out.println("C = Check , R = Raise , F = Fold");
         c = stringBeolvasas();
         if (c.equals("R") || c.equals("r")) {
@@ -113,19 +156,22 @@ public class Deal {
                 System.exit(0);
             }
             if (c.equals("Y") || c.equals("y")) {
-                aGame(Deck.myDeck());
+                runGame();
             }
         }
         //Dealing the River
-        burn = (int) (Math.random() * cards.size());
-        cards.remove(burn);
+        chooseRandomCard();
 
-        card = (int) (Math.random() * cards.size());
-        cards.remove(card);
-        cardsOnTable.add(card);
-        System.out.println("River: " + cardsOnTable);
+        cardsOnTable.add(chooseRandomCard());
+        System.out.println("River: ");
+        for (Card card : cardsOnTable) {
+            printCard(card);
+        }
 
-        System.out.println("Your Cards: " + my.myHand);
+        System.out.println("Your Cards: ");
+        for (Card myCard : myCards) {
+            printCard(myCard);
+        }
         System.out.println("C = Check , R = Raise , F = Fold");
         Scanner scd = new Scanner(System.in);
         c = scd.next();
@@ -139,7 +185,7 @@ public class Deal {
                 System.exit(0);
             }
             if (c.equals("Y") || c.equals("y")) {
-                aGame(Deck.myDeck());
+                runGame();
             }
         }
         scd.close();
@@ -153,8 +199,9 @@ public class Deal {
         } while (!answer.equals("r"));
 
     }
+
     private static int intBeolvasas() {
-       return Integer.parseInt(stringBeolvasas());
+        return Integer.parseInt(stringBeolvasas());
     }
 }
 

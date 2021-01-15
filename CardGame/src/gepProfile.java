@@ -1,22 +1,22 @@
 import java.util.ArrayList;
 
 public class gepProfile {
-    ArrayList<Integer> gepHand;
-    int balance;
+    ArrayList<Card> gepHand = new ArrayList<>();
+    private int balance;
 
-    public gepProfile(ArrayList<Integer> gepHand) {
+    public gepProfile( ArrayList<Card> gepHand) {
         this.gepHand = gepHand;
     }
 
     public gepProfile() {
     }
 
-    public ArrayList<Integer> getGepHand() {
+    public  ArrayList<Card> getGepHand() {
         return gepHand;
     }
 
-    public void setGepHand(ArrayList<Integer> gepHand) {
-        this.gepHand = gepHand;
+    public void setGepHand( ArrayList<Card> myHand) {
+        this.gepHand = myHand;
     }
 
     public int getBalance() {

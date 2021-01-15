@@ -1,21 +1,22 @@
 import java.util.ArrayList;
 
 public class myProfile {
-    ArrayList<Integer> myHand = new ArrayList<>();
+    ArrayList<Card> myHand = new ArrayList<Card>();
     private int balance;
 
-    public myProfile(ArrayList<Integer> myHand) {
+
+    public myProfile(ArrayList<Card> myHand) {
         this.myHand = myHand;
     }
 
     public myProfile() {
     }
 
-    public ArrayList<Integer> getMyHand() {
+    public ArrayList<Card> getMyHand() {
         return myHand;
     }
 
-    public void setMyHand(ArrayList<Integer> myHand) {
+    public void setMyHand(ArrayList<Card> myHand) {
         this.myHand = myHand;
     }
 
