@@ -1,3 +1,10 @@
+package service;
+
+import models.Card;
+import models.Deck;
+import models.Profile;
+import models.Symbols;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -68,6 +75,7 @@ public class Deal {
     }
 
     public static void runGame() {
+        moneyUpload();
         profiles.add(my);
         profiles.add(pc1);
         profiles.add(pc2);
@@ -128,7 +136,7 @@ public class Deal {
             bet();
         }
         if (c.equals("F") || c.equals("f")) {
-            System.out.println("New Deal? Y/N");
+            System.out.println("New service.Deal? Y/N");
             c = stringBeolvasas();
             if (c.equals("N") || c.equals("n")) {
                 System.exit(0);

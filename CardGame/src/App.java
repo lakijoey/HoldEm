@@ -1,9 +1,10 @@
+import static service.Deal.runGame;
+
 public class App {
 
     public static void main(String[] args) {
-        Deal.moneyUpload();
         try {
-            Deal.runGame();
+            runGame();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

@@ -1,3 +1,5 @@
+package models;
+
 public class Card {
     private Symbols symbol;
     private int value;
