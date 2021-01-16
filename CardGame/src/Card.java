@@ -11,6 +11,21 @@ public class Card {
         return symbol;
     }
 
+    public String getSymbolForm() {
+        switch (symbol) {
+            case CLUBS:
+                return "♣";
+            case DIAMONDS:
+                return "♦";
+            case SPADES:
+                return "♤";
+            case HEARTS:
+                return "♥";
+            default:
+                return symbol.name();
+        }
+    }
+
     public void setSymbol(Symbols symbol) {
         this.symbol = symbol;
     }
