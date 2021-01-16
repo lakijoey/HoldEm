@@ -1,8 +1,6 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Deck {
-
 
     public static ArrayList<Card> myDeck() {
         ArrayList<Card> myHashDeck = new ArrayList<>();

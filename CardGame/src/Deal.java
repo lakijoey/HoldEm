@@ -2,31 +2,23 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Deal {
-
     private static ArrayList<Card> cardsOnTable = new ArrayList<>();
-    private static Pot pot = new Pot(0);
+    private static Integer pot = 0;
     private static Profile my = new Profile();
-    private static Profile pc = new Profile();
+    private static Profile pc1 = new Profile();
+    private static Profile pc2 = new Profile();
     private static Scanner sc = new Scanner(System.in);
     private static ArrayList<Card> cards = Deck.myDeck();
+    private static ArrayList<Profile> profiles = new ArrayList<>();
 
     private static void printCard(Card card) {
         int a = card.getValue();
         switch (a) {
-            case 1:
-                System.out.println("A" + card.getSymbolForm());
-                break;
-            case 11:
-                System.out.println("J" + card.getSymbolForm());
-                break;
-            case 12:
-                System.out.println("Q" + card.getSymbolForm());
-                break;
-            case 13:
-                System.out.println("K" + card.getSymbolForm());
-                break;
-            default:
-                System.out.println(a + "" + card.getSymbolForm());
+            case 1 -> System.out.print("A" + card.getSymbolForm() + " ");
+            case 11 -> System.out.print("J" + card.getSymbolForm() + " ");
+            case 12 -> System.out.print("Q" + card.getSymbolForm() + " ");
+            case 13 -> System.out.print("K" + card.getSymbolForm() + " ");
+            default -> System.out.print(a + "" + card.getSymbolForm() + " ");
         }
     }
 
@@ -39,56 +31,60 @@ public class Deal {
     }
 
     public static Symbols chooseColor(int i) {
-        switch (i) {
-            case 1:
-                return Symbols.CLUBS;
-            case 2:
-                return Symbols.HEARTS;
-            case 3:
-                return Symbols.DIAMONDS;
-            case 4:
-                return Symbols.SPADES;
-        }
-        return null;
+        return switch (i) {
+            case 1 -> Symbols.CLUBS;
+            case 2 -> Symbols.HEARTS;
+            case 3 -> Symbols.DIAMONDS;
+            case 4 -> Symbols.SPADES;
+            default -> null;
+        };
     }
 
-    public static void bet(Profile my, Profile gep, Pot pot) {
+    public static void bet() {
         System.out.println("How Much?    Balance: " + my.getBalance());
         int bet = intBeolvasas();
-        my.setBalance(my.getBalance() - bet);
-        gep.setBalance(gep.getBalance() - bet);
-        pot.setPot(pot.getPot() + bet * 2);
+        for (Profile profile : profiles) {
+            profile.setBalance(profile.getBalance() - bet);
+            profile.setBalance(profile.getBalance() - bet);
+        }
+        pot = bet * profiles.size();
         System.out.println("New Balance: " + my.getBalance());
-        System.out.println("Pot: " + pot.getPot());
+        System.out.println("Pot: " + pot);
     }
 
     public static void moneyUpload() {
         System.out.println("Add money to your balance: (The AI will start with the same amount)");
         int balance = intBeolvasas();
         my.setBalance(balance);
-        pc.setBalance(balance);
+        pc1.setBalance(balance);
+        pc2.setBalance(balance);
     }
 
     public static void printCards(ArrayList<Card> myCards) {
         for (Card myCard : myCards) {
             printCard(myCard);
         }
-        System.out.println();
+        System.out.println("\n");
     }
 
     public static void runGame() {
-        ArrayList<Card> myCards = new ArrayList<Card>();             //Az en lapjaim
-        ArrayList<Card> gepCards = new ArrayList<Card>();             //A gep lapjai
+        profiles.add(my);
+        profiles.add(pc1);
+        profiles.add(pc2);
 
-        for (int i = 0; i < 2; i++) { //TODO how many player
-            Card card1 = chooseRandomCard();
-            Card card2 = chooseRandomCard();
-            myCards.add(card1);
-            gepCards.add(card2);
+        ArrayList<Card> myCards = new ArrayList<>();
+        ArrayList<Card> gepCards1 = new ArrayList<>();
+        ArrayList<Card> gepCards2 = new ArrayList<>();
+
+        for (int i = 0; i < 2; i++) {
+            myCards.add(chooseRandomCard());
+            gepCards1.add(chooseRandomCard());
+            gepCards2.add(chooseRandomCard());
         }
 
         my.setHand(myCards);
-        pc.setHand(gepCards);
+        pc1.setHand(gepCards1);
+        pc2.setHand(gepCards2);
         System.out.println("My cards: ");
         printCards(myCards);
         askingMe();
@@ -98,20 +94,17 @@ public class Deal {
         for (int i = 0; i < 3; i++) {
             cardsOnTable.add(chooseRandomCard());
         }
-        System.out.println("A flop: ");
+        System.out.println("Flop: ");
         printCards(cardsOnTable);
         System.out.println("My cards: ");
-
         printCards(myCards);
         askingMe();
 //Dealing the Turn
         chooseRandomCard();
-
         cardsOnTable.add(chooseRandomCard());
         System.out.println("Turn: ");
         printCards(cardsOnTable);
         System.out.println("My cards: ");
-
         printCards(myCards);
         askingMe();
 //Dealing the River
@@ -119,26 +112,20 @@ public class Deal {
         cardsOnTable.add(chooseRandomCard());
         System.out.println("River: ");
         printCards(cardsOnTable);
-
         System.out.println("My cards: ");
         printCards(myCards);
         askingMe();
     }
 
     private static String stringBeolvasas() {
-        String answer = null;
-        do {
-            answer = sc.next();
-            return answer;
-        } while (!answer.equals("r"));
-
+        return sc.next();
     }
 
     private static void askingMe() {
         System.out.println("C = Check , R = Raise , F = Fold");
         String c = stringBeolvasas();
         if (c.equals("R") || c.equals("r")) {
-            bet(my, pc, pot);
+            bet();
         }
         if (c.equals("F") || c.equals("f")) {
             System.out.println("New Deal? Y/N");

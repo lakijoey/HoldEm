@@ -5,7 +5,6 @@ public class Profile {
     private int balance;
 
     public Profile() {
-
     }
 
     public Profile(ArrayList<Card> hand, int balance) {
