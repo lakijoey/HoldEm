@@ -17,6 +17,7 @@ public class Deal {
     private static Scanner sc = new Scanner(System.in);
     private static ArrayList<Card> cards = Deck.myDeck();
     public static ArrayList<Profile> profiles = new ArrayList<>();
+    public static RuleChecker ruleChecker = new RuleChecker();
 
 
     private static void printCard(Card card) {
@@ -123,6 +124,7 @@ public class Deal {
         System.out.println("My cards: ");
         printCards(myCards);
         askingMe();
+        //TODO ruleChecker.checkWinner();
     }
 
     private static String stringBeolvasas() {
