@@ -9,14 +9,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Deal {
-    private static ArrayList<Card> cardsOnTable = new ArrayList<>();
+    public static ArrayList<Card> cardsOnTable = new ArrayList<>();
     private static Integer pot = 0;
     private static Profile my = new Profile();
     private static Profile pc1 = new Profile();
     private static Profile pc2 = new Profile();
     private static Scanner sc = new Scanner(System.in);
     private static ArrayList<Card> cards = Deck.myDeck();
-    private static ArrayList<Profile> profiles = new ArrayList<>();
+    public static ArrayList<Profile> profiles = new ArrayList<>();
+
 
     private static void printCard(Card card) {
         int a = card.getValue();
@@ -51,7 +52,6 @@ public class Deal {
         System.out.println("How Much?    Balance: " + my.getBalance());
         int bet = intBeolvasas();
         for (Profile profile : profiles) {
-            profile.setBalance(profile.getBalance() - bet);
             profile.setBalance(profile.getBalance() - bet);
         }
         pot = bet * profiles.size();
