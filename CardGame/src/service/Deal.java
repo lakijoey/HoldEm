@@ -62,9 +62,14 @@ public class Deal {
     public static void moneyUpload() {
         System.out.println("Add money to your balance: (The AI will start with the same amount)");
         int balance = intBeolvasas();
+        System.out.println("Give me your name.");
+        String name = stringBeolvasas();
+        my.setName(name);
         my.setBalance(balance);
         pc1.setBalance(balance);
+        pc1.setName("PC1");
         pc2.setBalance(balance);
+        pc2.setName("PC2");
     }
 
     public static void printCards(ArrayList<Card> myCards) {
@@ -129,13 +134,14 @@ public class Deal {
     public static void winnerGetsPot(){
         ArrayList<Profile> winners = RuleChecker.checkWinner();
         if(winners.size() == 1) {
-            System.out.println("Winner: " + winners);
+            System.out.println("Winner: " + winners.get(0).getName());
             winners.get(0).setBalance(pot);
             pot = 0;
         } else {
-            System.out.println("Winners: " + winners);
+            System.out.print("Winners: " );
             int winnerNumber = winners.size();
             for (Profile winner : winners) {
+                System.out.print(winner.getName() + " ");
                 winner.setBalance(pot/winnerNumber);
             }
             pot = 0;
