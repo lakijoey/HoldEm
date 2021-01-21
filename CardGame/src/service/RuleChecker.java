@@ -4,6 +4,7 @@ import models.Card;
 import models.Profile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -12,7 +13,8 @@ public class RuleChecker {
     private static final ArrayList<Card> cardsOnTable = Deal.cardsOnTable;
     private static final ArrayList<Profile> profiles = Deal.profiles;
 
-    public static ArrayList<Integer> getSevenCards(Profile profile) { //TODO int[] -öt felejtsd el. nagyon ritkán kell használni. nem akarsz te külön buborékrendezést irni rá. Használd a ArrayList<Integer> -nek a sort-ját pl.
+
+    public static ArrayList<Integer> getSevenCards(Profile profile) {
         ArrayList<Integer> sevenCard = new ArrayList<>();
 
         for (Card cardsontable : cardsOnTable) {
@@ -46,43 +48,40 @@ public class RuleChecker {
         return (c >= 5 || h >= 5 || d >= 5 || s >= 5);
     }
 
-    public static boolean checkStraight(int[] sevenCards) {
+    public static boolean checkStraight(ArrayList<Integer> sevenCards) {
         int db = 1;
         //check if cards follow each other
-        for (int j = 0; j < sevenCards.length - 1; j++) {
-            if (sevenCards[j] == sevenCards[j + 1] - 1) {  //TODO példa: 4-9-10-J-D-Q-A  Ha jól emlékszem az ász, az 1-es értékű. Meg írd át ArrayList<Integer> -re
+        for (int j = 0; j < sevenCards.size()-1; j++) {
+            if (sevenCards.get(j) == sevenCards.get(j+1) - 1) {
                 db++;
             } else {
                 db = 1;
             }
         }
-        return db >= 5;
+
+        return (sevenCards.containsAll(Arrays.asList(1, 10, 11, 12, 13)) || db >=5);
     }
 
-    public static boolean checkDrill(int[] sevenCards) {
-        HashMap<Integer, Integer> incidences = new HashMap<>();  //TODO 1. ránézésre ez oké. values-t átirtam: incidence=előfordulás
-        for (int i = 0; i < sevenCards.length - 1; i++) {
-            if (incidences.containsKey(sevenCards[i])) {
-                incidences.put(sevenCards[i], incidences.get(sevenCards[i]) + 1);
+
+    public static int maxValue(ArrayList<Integer> sevenCards) {
+        HashMap<Integer, Integer> incidences = new HashMap<>();
+        for (int i = 0; i < sevenCards.size(); i++) {
+            if (incidences.containsKey(sevenCards.get(i))) {
+                incidences.put(sevenCards.get(i), incidences.get(sevenCards.get(i)) + 1);
             } else {
-                incidences.put(sevenCards[i], 1);
+                incidences.put(sevenCards.get(i), 1);
             }
         }
-        int maxValue = Collections.max(incidences.values());
-        return maxValue >= 3;
+        return Collections.max(incidences.values());
+
     }
 
-    public static boolean checkPoker(int[] sevenCards) { //TODO alá is huzza 61-74-es sort sárgával. Minde a kettő metódus ugyanazt csinálja. Csak az egyik 4-re ellenőrik. Javítsd ki ne legyen duplikáció
-        HashMap<Integer, Integer> values = new HashMap<>();
-        for (int i = 0; i < sevenCards.length - 1; i++) {
-            if (values.containsKey(sevenCards[i])) {
-                values.put(sevenCards[i], values.get(sevenCards[i]) + 1);
-            } else {
-                values.put(sevenCards[i], 1);
-            }
-        }
-        int maxValue = Collections.max(values.values());
-        return maxValue >= 4;
+    public static boolean checkPoker() {
+        return  (maxValue(getSevenCards(Profile profile)) == 4);
+    }
+
+    public static boolean checkThreeOfAKind() {
+        return  (maxValue(getSevenCards(Profile profile)) == 3);
     }
 
 }
