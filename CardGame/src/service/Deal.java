@@ -17,7 +17,6 @@ public class Deal {
     private static Scanner sc = new Scanner(System.in);
     private static ArrayList<Card> cards = Deck.myDeck();
     public static ArrayList<Profile> profiles = new ArrayList<>();
-    public static RuleChecker ruleChecker = new RuleChecker();
 
 
     private static void printCard(Card card) {
@@ -76,7 +75,6 @@ public class Deal {
     }
 
     public static void runGame() {
-        moneyUpload();
         profiles.add(my);
         profiles.add(pc1);
         profiles.add(pc2);
@@ -124,7 +122,24 @@ public class Deal {
         System.out.println("My cards: ");
         printCards(myCards);
         askingMe();
-        //TODO ruleChecker.checkWinner();
+        winnerGetsPot();
+
+    }
+
+    public static void winnerGetsPot(){
+        ArrayList<Profile> winners = RuleChecker.checkWinner();
+        if(winners.size() == 1) {
+            System.out.println("Winner: " + winners);
+            winners.get(0).setBalance(pot);
+            pot = 0;
+        } else {
+            System.out.println("Winners: " + winners);
+            int winnerNumber = winners.size();
+            for (Profile winner : winners) {
+                winner.setBalance(pot/winnerNumber);
+            }
+            pot = 0;
+        }
     }
 
     private static String stringBeolvasas() {
