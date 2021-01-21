@@ -48,7 +48,7 @@ public class RuleChecker {
         return (c >= 5 || h >= 5 || d >= 5 || s >= 5);
     }
 
-    public static boolean checkStraight(ArrayList<Integer> sevenCards) {
+    public static boolean checkStraight(ArrayList<Integer> sevenCards, Profile profile) {
         int db = 1;
         //check if cards follow each other
         for (int j = 0; j < sevenCards.size()-1; j++) {
@@ -63,7 +63,7 @@ public class RuleChecker {
     }
 
 
-    public static int maxValue(ArrayList<Integer> sevenCards) {
+    public static int getSameCardsNumber(ArrayList<Integer> sevenCards, Profile profile) {
         HashMap<Integer, Integer> incidences = new HashMap<>();
         for (int i = 0; i < sevenCards.size(); i++) {
             if (incidences.containsKey(sevenCards.get(i))) {
@@ -76,12 +76,14 @@ public class RuleChecker {
 
     }
 
-    public static boolean checkPoker() {
-        return  (maxValue(getSevenCards(Profile profile)) == 4);
+    public static boolean checkPoker(Profile profile) {
+        return getSameCardsNumber(getSevenCards(profile),profile) == 4;
     }
 
-    public static boolean checkThreeOfAKind() {
-        return  (maxValue(getSevenCards(Profile profile)) == 3);
+
+
+    public static boolean checkThreeOfAKind(Profile profile) {
+        return getSameCardsNumber(getSevenCards(profile),profile) == 3;
     }
 
 }
