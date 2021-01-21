@@ -128,6 +128,8 @@ public class Deal {
         printCards(myCards);
         askingMe();
         winnerGetsPot();
+        cardsOnTable.clear();
+        runGame();
 
     }
 
