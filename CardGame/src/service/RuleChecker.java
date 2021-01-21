@@ -6,38 +6,23 @@ import models.Profile;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 
 
 public class RuleChecker {
     private static final ArrayList<Card> cardsOnTable = Deal.cardsOnTable;
     private static final ArrayList<Profile> profiles = Deal.profiles;
 
-    public static int[] getSevenCards(Profile profile) {
-        int[] sevenCards = new int[7];
-        int csere = 0;
-        int i = 0;
-        //cardsOnTable Values to tomb
+    public static ArrayList<Integer> getSevenCards(Profile profile) { //TODO int[] -öt felejtsd el. nagyon ritkán kell használni. nem akarsz te külön buborékrendezést irni rá. Használd a ArrayList<Integer> -nek a sort-ját pl.
+        ArrayList<Integer> sevenCard = new ArrayList<>();
+
         for (Card cardsontable : cardsOnTable) {
-            sevenCards[i] = cardsontable.getValue();
-            i++;
+            sevenCard.add(cardsontable.getValue());
         }
-        //PlayerCardValues to tomb ...now we have all cards values 
         for (Card handcards : profile.getHand()) {
-            sevenCards[i] = handcards.getValue();
-            i++;
+            sevenCard.add(handcards.getValue());
         }
-        //getting ascending order
-        for (int j = 0; j < sevenCards.length - 1; j++) {
-            for (int k = j + 1; k < sevenCards.length; k++) {
-                if (sevenCards[j] > sevenCards[k]) {
-                    csere = sevenCards[j];
-                    sevenCards[j] = sevenCards[k];
-                    sevenCards[k] = csere;
-                }
-            }
-        }
-        return sevenCards;
+        Collections.sort(sevenCard);
+        return sevenCard;
     }
 
     public static boolean checkFlush(Profile profile) {
@@ -65,7 +50,7 @@ public class RuleChecker {
         int db = 1;
         //check if cards follow each other
         for (int j = 0; j < sevenCards.length - 1; j++) {
-            if (sevenCards[j] == sevenCards[j + 1] - 1) {
+            if (sevenCards[j] == sevenCards[j + 1] - 1) {  //TODO példa: 4-9-10-J-D-Q-A  Ha jól emlékszem az ász, az 1-es értékű. Meg írd át ArrayList<Integer> -re
                 db++;
             } else {
                 db = 1;
@@ -74,20 +59,20 @@ public class RuleChecker {
         return db >= 5;
     }
 
-    public static boolean checkThreeOfAKind(int[] sevenCards) {
-        HashMap<Integer, Integer> values = new HashMap<>();
+    public static boolean checkDrill(int[] sevenCards) {
+        HashMap<Integer, Integer> incidences = new HashMap<>();  //TODO 1. ránézésre ez oké. values-t átirtam: incidence=előfordulás
         for (int i = 0; i < sevenCards.length - 1; i++) {
-            if (values.containsKey(sevenCards[i])) {
-                values.put(sevenCards[i], values.get(sevenCards[i]) + 1);
+            if (incidences.containsKey(sevenCards[i])) {
+                incidences.put(sevenCards[i], incidences.get(sevenCards[i]) + 1);
             } else {
-                values.put(sevenCards[i], 1);
+                incidences.put(sevenCards[i], 1);
             }
         }
-        int maxValue = Collections.max(values.values());
+        int maxValue = Collections.max(incidences.values());
         return maxValue >= 3;
     }
 
-    public static boolean checkPoker(int[] sevenCards){
+    public static boolean checkPoker(int[] sevenCards) { //TODO alá is huzza 61-74-es sort sárgával. Minde a kettő metódus ugyanazt csinálja. Csak az egyik 4-re ellenőrik. Javítsd ki ne legyen duplikáció
         HashMap<Integer, Integer> values = new HashMap<>();
         for (int i = 0; i < sevenCards.length - 1; i++) {
             if (values.containsKey(sevenCards[i])) {
@@ -105,7 +90,8 @@ public class RuleChecker {
 
 
 /*
-    public void checkWinner() {
+    public static Profile checkWinner() {
+    Profile winner = null;
         for (Profile profile : profiles) {
             checkHighCard(profile);
             checkPairs(profile);
@@ -124,6 +110,7 @@ public class RuleChecker {
                 }
             }
         }
+        return winner
     }
 */
 
