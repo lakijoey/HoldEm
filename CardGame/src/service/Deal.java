@@ -150,9 +150,8 @@ public class Deal {
     public static void winnerGetsPot() {
         ArrayList<Profile> winners = RuleChecker.checkWinner();
         if (winners.size() == 1) {
-            System.out.println("Winner: " + winners.get(0).getName() + "'s cards: ");
+            System.out.println("Winner: " + winners.get(0).getName());
             System.out.println("Won: " + pot);
-            printCards(winners.get(0).getHand());
             winners.get(0).setBalance(winners.get(0).getBalance() + pot);
             pot = 0;
         } else {
