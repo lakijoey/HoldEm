@@ -5,6 +5,7 @@ import models.Deck;
 import models.Profile;
 import models.Symbols;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -18,6 +19,48 @@ public class Deal {
     private static ArrayList<Card> cards = Deck.myDeck();
     public static ArrayList<Profile> profiles = new ArrayList<>();
 
+    private static void printTable() {
+        try {
+            File file = new File("CardGame/src/table.txt");
+            Scanner sc2 = new Scanner(file);
+            while (sc2.hasNextLine()) {
+
+                String line = sc2.nextLine();
+                char[] charsInOneLine = line.toCharArray();
+                for (int i = 0; i < charsInOneLine.length; i++) {
+                    if (charsInOneLine[i] == '1') {
+                        char[] names = my.getName().toCharArray();
+                        int index = 0;
+                        for (int j = 0; j < names.length; j++) {
+                            charsInOneLine[i + 3 + index] = names[index];
+                            index++;
+                        }
+                    }
+                    if (charsInOneLine[i] == '2') {
+                        char[] names = pc1.getName().toCharArray();
+                        int index = 0;
+                        for (int j = 0; j < names.length; j++) {
+                            charsInOneLine[i + 3 + index] = names[index];
+                            index++;
+                        }
+                    }
+                    if (charsInOneLine[i] == '3') {
+                        char[] names = pc2.getName().toCharArray();
+                        int index = 0;
+                        for (int j = 0; j < names.length; j++) {
+                            charsInOneLine[i + 3 + index] = names[index];
+                            index++;
+                        }
+                    }
+                }
+            }
+            while (sc2.hasNextLine()) {
+                System.out.println(sc2.nextLine());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     private static void printCard(Card card) {
         int a = card.getValue();
@@ -93,7 +136,7 @@ public class Deal {
             gepCards1.add(chooseRandomCard());
             gepCards2.add(chooseRandomCard());
         }
-
+        printTable();
         my.setHand(myCards);
         pc1.setHand(gepCards1);
         pc2.setHand(gepCards2);
@@ -137,15 +180,15 @@ public class Deal {
 
     }
 
-    public static void winnerGetsPot(){
+    public static void winnerGetsPot() {
         ArrayList<Profile> winners = RuleChecker.checkWinner();
-        if(winners.size() == 1) {
+        if (winners.size() == 1) {
             System.out.println("Winner: " + winners.get(0).getName() + "Cards: ");
             printCards(winners.get(0).getHand());
             winners.get(0).setBalance(winners.get(0).getBalance() + pot);
             pot = 0;
         } else {
-            System.out.print("Winners: " );
+            System.out.print("Winners: ");
             int splittedPot = pot / winners.size();
             for (Profile winner : winners) {
                 System.out.print(winner.getName() + " Cards: ");
