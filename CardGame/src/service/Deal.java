@@ -5,7 +5,6 @@ import models.Deck;
 import models.Profile;
 import models.Symbols;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -21,41 +20,22 @@ public class Deal {
 
     private static void printTable() {
         try {
-            File file = new File("CardGame/src/table.txt");
-            Scanner sc2 = new Scanner(file);
-            while (sc2.hasNextLine()) {
-
-                String line = sc2.nextLine();
-                char[] charsInOneLine = line.toCharArray();
-                for (int i = 0; i < charsInOneLine.length - 1; i++) {
-                    if (charsInOneLine[i] == 'A') {
-                        char[] names = my.getName().toCharArray();
-                        int index = 0;
-                        for (int j = 0; j < names.length; j++) {
-                            charsInOneLine[i + 3 + index] = names[index];
-                            index++;
-                        }
-                    }
-                    if (charsInOneLine[i] == 'B') {
-                        char[] names = pc1.getName().toCharArray();
-                        int index = 0;
-                        for (int j = 0; j < names.length; j++) {
-                            charsInOneLine[i + 3 + index] = names[index];
-                            index++;
-                        }
-                    }
-                    if (charsInOneLine[i] == 'C') {
-                        char[] names = pc2.getName().toCharArray();
-                        int index = 0;
-                        for (int j = 0; j < names.length; j++) {
-                            charsInOneLine[i + 3 + index] = names[index];
-                            index++;
-                        }
-                    }
-                }
-                System.out.println(charsInOneLine);
-            }
-
+            System.out.println("______________________________________");
+            System.out.println("  " + my.getName() + "                  " + pc1.getName());
+            System.out.println("  " + my.getBalance() + "                    " + pc1.getBalance());
+            System.out.print("  ");
+            printCards(my.getHand());
+            System.out.print("                 ");
+            printCards(pc1.getHand());
+            System.out.println("\n");
+            System.out.print("         ");
+            printCards(cardsOnTable);
+            System.out.println("\n          Pot: " + pot + "              \n\n");      //    \n  --> új sor
+            System.out.println("  " + pc2.getName() + "                  ");
+            System.out.println("  " + pc2.getBalance() + "                  ");
+            System.out.print("  ");
+            printCards(pc2.getHand());
+            System.out.println("\n______________________________________");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -118,7 +98,6 @@ public class Deal {
         for (Card myCard : myCards) {
             printCard(myCard);
         }
-        System.out.println("\n");
     }
 
     public static void runGame() {
@@ -135,12 +114,10 @@ public class Deal {
             gepCards1.add(chooseRandomCard());
             gepCards2.add(chooseRandomCard());
         }
-        printTable();
         my.setHand(myCards);
         pc1.setHand(gepCards1);
         pc2.setHand(gepCards2);
-        System.out.println("My cards: ");
-        printCards(myCards);
+        printTable();
         askingMe();
 
 //dealing flop, adding to cardsOnTable
@@ -148,33 +125,24 @@ public class Deal {
         for (int i = 0; i < 3; i++) {
             cardsOnTable.add(chooseRandomCard());
         }
-        System.out.println("Flop: ");
-        printCards(cardsOnTable);
-        System.out.println("My cards: ");
-        printCards(myCards);
+        printTable();
         askingMe();
 //Dealing the Turn
         chooseRandomCard();
         cardsOnTable.add(chooseRandomCard());
         System.out.println("Turn: ");
-        printCards(cardsOnTable);
-        System.out.println("My cards: ");
-        printCards(myCards);
+        printTable();
         askingMe();
 //Dealing the River
         chooseRandomCard();
         cardsOnTable.add(chooseRandomCard());
         System.out.println("River: ");
-        printCards(cardsOnTable);
-        System.out.println("My cards: ");
-        printCards(myCards);
-        System.out.println("Pc cards: ");  //TODO kivenni majd innen
-        printCards(gepCards1);
-        printCards(gepCards2);
+        printTable();
 
         askingMe();
         winnerGetsPot();
         cardsOnTable.clear();
+        System.out.println("______________________NEW_ROUND______________________________");
         runGame();
 
     }
@@ -182,7 +150,8 @@ public class Deal {
     public static void winnerGetsPot() {
         ArrayList<Profile> winners = RuleChecker.checkWinner();
         if (winners.size() == 1) {
-            System.out.println("Winner: " + winners.get(0).getName() + "Cards: ");
+            System.out.println("Winner: " + winners.get(0).getName() + "'s cards: ");
+            System.out.println("Won: " + pot);
             printCards(winners.get(0).getHand());
             winners.get(0).setBalance(winners.get(0).getBalance() + pot);
             pot = 0;
