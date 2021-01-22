@@ -111,7 +111,7 @@ public class RuleChecker {
         return getOccurances(getSevenCards(profile)) == 5;
     }
 
-    public static int getHighCardValue(Profile profile) {
+    public static int getHighCardValue(Profile profile) {  //TODO highcard if else
         return Collections.max(getSevenCards(profile));
     }
 
@@ -153,11 +153,12 @@ public class RuleChecker {
             for (Map.Entry<Profile, Integer> profileIntegerEntry : ranking.entrySet()) {
                 if (profileIntegerEntry.getValue() < Collections.max(ranking.values())) {
                     ranking.remove(profileIntegerEntry.getKey());
-                } //TODO szar van a biliben
-                if (profileIntegerEntry.getValue() == Collections.max(ranking.values()).intValue()) {   //if draw high card wins
-                    score = getHighCardValue(profileIntegerEntry.getKey());
-                    ranking.put(profileIntegerEntry.getKey(), score);
                 }
+            }
+            for (Map.Entry<Profile, Integer> profileIntegerEntry : ranking.entrySet()) {
+                //if draw high card wins
+                score = getHighCardValue(profileIntegerEntry.getKey());
+                ranking.put(profileIntegerEntry.getKey(), score);
             }
         }
         for (Map.Entry<Profile, Integer> winners : ranking.entrySet()) {  //check final scores after drawcheck, can be still draw with high card, thats why im using arraylist

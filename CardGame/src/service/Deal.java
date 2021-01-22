@@ -54,7 +54,7 @@ public class Deal {
         for (Profile profile : profiles) {
             profile.setBalance(profile.getBalance() - bet);
         }
-        pot = bet * profiles.size();
+        pot += bet * profiles.size();
         System.out.println("New Balance: " + my.getBalance());
         System.out.println("Pot: " + pot);
     }
@@ -142,15 +142,15 @@ public class Deal {
         if(winners.size() == 1) {
             System.out.println("Winner: " + winners.get(0).getName() + "Cards: ");
             printCards(winners.get(0).getHand());
-            winners.get(0).setBalance(pot);
+            winners.get(0).setBalance(winners.get(0).getBalance() + pot);
             pot = 0;
         } else {
             System.out.print("Winners: " );
-            int winnerNumber = winners.size();
+            int splittedPot = pot / winners.size();
             for (Profile winner : winners) {
                 System.out.print(winner.getName() + " Cards: ");
                 printCards(winner.getHand());
-                winner.setBalance(pot / winnerNumber);
+                winner.setBalance(winner.getBalance() + splittedPot);
             }
             pot = 0;
         }
