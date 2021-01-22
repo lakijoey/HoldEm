@@ -27,8 +27,8 @@ public class Deal {
 
                 String line = sc2.nextLine();
                 char[] charsInOneLine = line.toCharArray();
-                for (int i = 0; i < charsInOneLine.length; i++) {
-                    if (charsInOneLine[i] == '1') {
+                for (int i = 0; i < charsInOneLine.length - 1; i++) {
+                    if (charsInOneLine[i] == 'A') {
                         char[] names = my.getName().toCharArray();
                         int index = 0;
                         for (int j = 0; j < names.length; j++) {
@@ -36,7 +36,7 @@ public class Deal {
                             index++;
                         }
                     }
-                    if (charsInOneLine[i] == '2') {
+                    if (charsInOneLine[i] == 'B') {
                         char[] names = pc1.getName().toCharArray();
                         int index = 0;
                         for (int j = 0; j < names.length; j++) {
@@ -44,7 +44,7 @@ public class Deal {
                             index++;
                         }
                     }
-                    if (charsInOneLine[i] == '3') {
+                    if (charsInOneLine[i] == 'C') {
                         char[] names = pc2.getName().toCharArray();
                         int index = 0;
                         for (int j = 0; j < names.length; j++) {
@@ -53,10 +53,9 @@ public class Deal {
                         }
                     }
                 }
+                System.out.println(charsInOneLine);
             }
-            while (sc2.hasNextLine()) {
-                System.out.println(sc2.nextLine());
-            }
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
