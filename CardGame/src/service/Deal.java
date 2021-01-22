@@ -126,6 +126,10 @@ public class Deal {
         printCards(cardsOnTable);
         System.out.println("My cards: ");
         printCards(myCards);
+        System.out.println("Pc cards: ");  //TODO kivenni majd innen
+        printCards(gepCards1);
+        printCards(gepCards2);
+
         askingMe();
         winnerGetsPot();
         cardsOnTable.clear();
@@ -136,15 +140,17 @@ public class Deal {
     public static void winnerGetsPot(){
         ArrayList<Profile> winners = RuleChecker.checkWinner();
         if(winners.size() == 1) {
-            System.out.println("Winner: " + winners.get(0).getName());
+            System.out.println("Winner: " + winners.get(0).getName() + "Cards: ");
+            printCards(winners.get(0).getHand());
             winners.get(0).setBalance(pot);
             pot = 0;
         } else {
             System.out.print("Winners: " );
             int winnerNumber = winners.size();
             for (Profile winner : winners) {
-                System.out.print(winner.getName() + " ");
-                winner.setBalance(pot/winnerNumber);
+                System.out.print(winner.getName() + " Cards: ");
+                printCards(winner.getHand());
+                winner.setBalance(pot / winnerNumber);
             }
             pot = 0;
         }

@@ -62,11 +62,11 @@ public class RuleChecker {
 
     public static int getOccurances(ArrayList<Integer> sevenCards) {
         HashMap<Integer, Integer> incidences = new HashMap<>();
-        for (int i = 0; i < sevenCards.size(); i++) {
-            if (incidences.containsKey(sevenCards.get(i))) {
-                incidences.put(sevenCards.get(i), incidences.get(sevenCards.get(i)) + 1);
+        for (Integer sevenCard : sevenCards) {
+            if (incidences.containsKey(sevenCard)) {
+                incidences.put(sevenCard, incidences.get(sevenCard) + 1);
             } else {
-                incidences.put(sevenCards.get(i), 1);
+                incidences.put(sevenCard, 1);
             }
         }
         int inc = Collections.max(incidences.values());
@@ -151,17 +151,17 @@ public class RuleChecker {
         }
         if (Collections.frequency(ranking.values(), Collections.max(ranking.values())) > 1) { //check if draw
             for (Map.Entry<Profile, Integer> profileIntegerEntry : ranking.entrySet()) {
-                if (profileIntegerEntry.getValue() > Collections.max(ranking.values())){
+                if (profileIntegerEntry.getValue() < Collections.max(ranking.values())) {
                     ranking.remove(profileIntegerEntry.getKey());
-                }
-                if (profileIntegerEntry.getValue() == Collections.max(ranking.values())){   //if draw high card wins
+                } //TODO szar van a biliben
+                if (profileIntegerEntry.getValue() == Collections.max(ranking.values()).intValue()) {   //if draw high card wins
                     score = getHighCardValue(profileIntegerEntry.getKey());
                     ranking.put(profileIntegerEntry.getKey(), score);
                 }
             }
         }
         for (Map.Entry<Profile, Integer> winners : ranking.entrySet()) {  //check final scores after drawcheck, can be still draw with high card, thats why im using arraylist
-            if (winners.getValue() == Collections.max(ranking.values())){
+            if (winners.getValue() == Collections.max(ranking.values()).intValue()) {
                 winner.add(winners.getKey());
             }
         }
