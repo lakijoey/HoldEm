@@ -17,6 +17,9 @@ public class Deal {
     private static Scanner sc = new Scanner(System.in);
     private static ArrayList<Card> cards = Deck.myDeck();
     public static ArrayList<Profile> profiles = new ArrayList<>();
+    public static ArrayList<Card> myCards = new ArrayList<>();
+    public static ArrayList<Card> gepCards1 = new ArrayList<>();
+    public static ArrayList<Card> gepCards2 = new ArrayList<>();
 
     private static void printTable() {
         try {
@@ -92,6 +95,10 @@ public class Deal {
         pc1.setName("PC1");
         pc2.setBalance(balance);
         pc2.setName("PC2");
+        profiles.add(my);
+        profiles.add(pc1);
+        profiles.add(pc2);
+
     }
 
     public static void printCards(ArrayList<Card> myCards) {
@@ -101,13 +108,9 @@ public class Deal {
     }
 
     public static void runGame() {
-        profiles.add(my);
-        profiles.add(pc1);
-        profiles.add(pc2);
-
-        ArrayList<Card> myCards = new ArrayList<>();
-        ArrayList<Card> gepCards1 = new ArrayList<>();
-        ArrayList<Card> gepCards2 = new ArrayList<>();
+        myCards.clear();
+        gepCards1.clear();
+        gepCards2.clear();
 
         for (int i = 0; i < 2; i++) {
             myCards.add(chooseRandomCard());

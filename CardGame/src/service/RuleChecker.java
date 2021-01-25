@@ -62,11 +62,11 @@ public class RuleChecker {
 
     public static int getOccurances(ArrayList<Integer> sevenCards) {
         HashMap<Integer, Integer> incidences = new HashMap<>();
-        for (Integer sevenCard : sevenCards) {
-            if (incidences.containsKey(sevenCard)) {
-                incidences.put(sevenCard, incidences.get(sevenCard) + 1);
+        for (int i = 0; i < sevenCards.size(); i++) {
+            if (incidences.containsKey(sevenCards.get(i))) {
+                incidences.put(sevenCards.get(i), incidences.get(sevenCards.get(i)) + 1);
             } else {
-                incidences.put(sevenCard, 1);
+                incidences.put(sevenCards.get(i), 1);
             }
         }
         int inc = Collections.max(incidences.values());
@@ -111,7 +111,7 @@ public class RuleChecker {
         return getOccurances(getSevenCards(profile)) == 5;
     }
 
-    public static int getHighCardValue(Profile profile) {  //TODO highcard if else
+    public static int getHighCardValue(Profile profile) {
         return Collections.max(getSevenCards(profile));
     }
 
