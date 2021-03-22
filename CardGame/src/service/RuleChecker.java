@@ -46,6 +46,7 @@ public class RuleChecker {
     }
 
     public static boolean checkStraight(ArrayList<Integer> sevenCards) {
+        HashMap<Boolean, Integer> straight = new HashMap<>();
         int db = 1;
         //check if cards follow each other
         for (int j = 0; j < sevenCards.size() - 1; j++) {
